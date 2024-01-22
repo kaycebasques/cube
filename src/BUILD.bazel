@@ -1,0 +1,41 @@
+# Copyright 2023 The Pigweed Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not
+# use this file except in compliance with the License. You may obtain a copy of
+# the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations under
+# the License.
+load("//:echo.bzl", "stm32_cc_binary")
+
+package(default_visibility = ["//visibility:public"])
+
+cc_binary(
+    name = "echo",
+    srcs = ["echo.cc"],
+    malloc = select({
+        "@platforms//cpu:armv7e-m": "@pigweed//pw_malloc",
+        "//conditions:default": "@bazel_tools//tools/cpp:malloc",
+    }),
+    deps = [
+        "@pigweed//pw_boot",
+        "@pigweed//pw_sys_io",
+        "@pigweed//targets:pw_assert_backend_impl",
+    ] + select({
+        "@platforms//cpu:armv7e-m": [
+            "@pigweed//targets/stm32f429i_disc1:basic_linker_script",
+            "@pigweed//targets/stm32f429i_disc1:pre_init",
+        ],
+        "//conditions:default": [],
+    }),
+)
+
+stm32_cc_binary(
+    name = "echo.elf",
+    binary = ":echo",
+)

@@ -1,0 +1,6 @@
+user.bazelrc
+bazel-*
+
+# Editor files
+*.swo
+*.swp
