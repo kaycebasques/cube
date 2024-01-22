@@ -30,6 +30,7 @@ cc_binary(
         "@platforms//cpu:armv7e-m": [
             "@pigweed//targets/stm32f429i_disc1:basic_linker_script",
             "@pigweed//targets/stm32f429i_disc1:pre_init",
+            "@pigweed//third_party/stm32cube:stm32cube",
         ],
         "//conditions:default": [],
     }),
