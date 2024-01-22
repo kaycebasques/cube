@@ -9,7 +9,7 @@ This repo will probably get archived or deleted in Q2 2024.
 
 ## Notes
 
-Notes are ordered chronologically, with the oldest stuff at the bottom. I'll
+Notes are ordered chronologically, with the oldest stuff at the top. I'll
 use H3 sections to make it easier to tell separate ideas apart.
 
 ### This is actually my second attempt
