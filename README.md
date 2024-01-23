@@ -1247,6 +1247,7 @@ Let me try to guess at the include for this function:
 #include <cstddef>
 
 #include "pw_sys_io/sys_io.h"
+#include "pw_sys_io_baremetal_stm32f429/init.h"
 #include "stm32f4xx.h"
 
 int main() {
@@ -1261,3 +1262,97 @@ int main() {
   return 0;
 }
 ```
+
+Still builds OK:
+
+```
+kayce@kayce0:~/repos/cube$ bazel build --platforms=//targets:stm32 //...
+INFO: Build options --@hal_driver//:hal_config, --copt, and --platforms have changed, discarding analysis cache.
+INFO: Analyzed 7 targets (0 packages loaded, 11798 targets configured).
+INFO: Found 7 targets...
+INFO: Elapsed time: 0.194s, Critical Path: 0.00s
+INFO: 1 process: 1 internal.
+INFO: Build completed successfully, 1 total action
+```
+
+Now it flashed OK too:
+
+```
+kayce@kayce0:~/repos/cube$ bazel run --config=stm32 //tools:flash --copt="-w"
+INFO: Build options --@hal_driver//:hal_config, --copt, and --platforms have changed, discarding analysis cache.
+INFO: Analyzed target //tools:flash (0 packages loaded, 13311 targets configured).
+INFO: Found 1 target...
+INFO: From Linking src/echo:
+/home/kayce/.cache/bazel/_bazel_kayce/12a041d3d86433b9db8348eb84f223b8/external/gcc_arm_none_eabi_toolchain/bin/../lib/gcc/arm-none-eabi/12.2.1/../../../../arm-none-eabi/bin/ld: /home/kayce/.cache/bazel/_bazel_kayce/12a041d3d86433b9db8348eb84f223b8/external/gcc_arm_none_eabi_toolchain/bin/../lib/gcc/arm-none-eabi/12.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-closer.o): in function `_close_r':
+closer.c:(.text._close_r+0xc): warning: _close is not implemented and will always fail
+/home/kayce/.cache/bazel/_bazel_kayce/12a041d3d86433b9db8348eb84f223b8/external/gcc_arm_none_eabi_toolchain/bin/../lib/gcc/arm-none-eabi/12.2.1/../../../../arm-none-eabi/bin/ld: /home/kayce/.cache/bazel/_bazel_kayce/12a041d3d86433b9db8348eb84f223b8/external/gcc_arm_none_eabi_toolchain/bin/../lib/gcc/arm-none-eabi/12.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-signalr.o): in function `_getpid_r':
+signalr.c:(.text._getpid_r+0x0): warning: _getpid is not implemented and will always fail
+/home/kayce/.cache/bazel/_bazel_kayce/12a041d3d86433b9db8348eb84f223b8/external/gcc_arm_none_eabi_toolchain/bin/../lib/gcc/arm-none-eabi/12.2.1/../../../../arm-none-eabi/bin/ld: /home/kayce/.cache/bazel/_bazel_kayce/12a041d3d86433b9db8348eb84f223b8/external/gcc_arm_none_eabi_toolchain/bin/../lib/gcc/arm-none-eabi/12.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-signalr.o): in function `_kill_r':
+signalr.c:(.text._kill_r+0xe): warning: _kill is not implemented and will always fail
+/home/kayce/.cache/bazel/_bazel_kayce/12a041d3d86433b9db8348eb84f223b8/external/gcc_arm_none_eabi_toolchain/bin/../lib/gcc/arm-none-eabi/12.2.1/../../../../arm-none-eabi/bin/ld: /home/kayce/.cache/bazel/_bazel_kayce/12a041d3d86433b9db8348eb84f223b8/external/gcc_arm_none_eabi_toolchain/bin/../lib/gcc/arm-none-eabi/12.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lseekr.o): in function `_lseek_r':
+lseekr.c:(.text._lseek_r+0x10): warning: _lseek is not implemented and will always fail
+/home/kayce/.cache/bazel/_bazel_kayce/12a041d3d86433b9db8348eb84f223b8/external/gcc_arm_none_eabi_toolchain/bin/../lib/gcc/arm-none-eabi/12.2.1/../../../../arm-none-eabi/bin/ld: /home/kayce/.cache/bazel/_bazel_kayce/12a041d3d86433b9db8348eb84f223b8/external/gcc_arm_none_eabi_toolchain/bin/../lib/gcc/arm-none-eabi/12.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-readr.o): in function `_read_r':
+readr.c:(.text._read_r+0x10): warning: _read is not implemented and will always fail
+/home/kayce/.cache/bazel/_bazel_kayce/12a041d3d86433b9db8348eb84f223b8/external/gcc_arm_none_eabi_toolchain/bin/../lib/gcc/arm-none-eabi/12.2.1/../../../../arm-none-eabi/bin/ld: /home/kayce/.cache/bazel/_bazel_kayce/12a041d3d86433b9db8348eb84f223b8/external/gcc_arm_none_eabi_toolchain/bin/../lib/gcc/arm-none-eabi/12.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-writer.o): in function `_write_r':
+writer.c:(.text._write_r+0x10): warning: _write is not implemented and will always fail
+Target //tools:flash up-to-date:
+  bazel-bin/tools/flash
+INFO: Elapsed time: 0.603s, Critical Path: 0.38s
+INFO: 4 processes: 2 internal, 2 linux-sandbox.
+INFO: Build completed successfully, 4 total actions
+INFO: Running command line: bazel-bin/tools/flash
+binary Rlocation is: /home/kayce/.cache/bazel/_bazel_kayce/12a041d3d86433b9db8348eb84f223b8/execroot/__main__/bazel-out/k8-fastbuild/bin/src/echo.elf
+openocd Rlocation is: /home/kayce/.cache/bazel/_bazel_kayce/12a041d3d86433b9db8348eb84f223b8/external/openocd/bin/openocd
+openocd config Rlocation is: /home/kayce/.cache/bazel/_bazel_kayce/12a041d3d86433b9db8348eb84f223b8/external/pigweed/targets/stm32f429i_disc1/py/stm32f429i_disc1_utils/openocd_stm32f4xx.cfg
+xPack OpenOCD x86_64 Open On-Chip Debugger 0.11.0+dev (2021-12-07-17:30)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+DEPRECATED! use 'adapter driver' not 'interface'
+DEPRECATED! use 'adapter serial' not 'hla_serial'
+Info : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+
+Info : clock speed 2000 kHz
+Info : STLINK V2J36M26 (API v2) VID:PID 0483:374B
+Info : Target voltage: 2.866822
+Info : stm32f4x.cpu: Cortex-M4 r0p1 processor detected
+Info : stm32f4x.cpu: target has 6 breakpoints, 4 watchpoints
+Info : gdb port disabled
+Info : Unable to match requested speed 2000 kHz, using 1800 kHz
+Info : Unable to match requested speed 2000 kHz, using 1800 kHz
+target halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x08000560 msp: 0x20030000
+Info : Unable to match requested speed 8000 kHz, using 4000 kHz
+Info : Unable to match requested speed 8000 kHz, using 4000 kHz
+** Programming Started **
+Info : device id = 0x20036419
+Info : flash size = 2048 kbytes
+Info : Dual Bank 2048 kiB STM32F42x/43x/469/479 found
+Info : Padding image section 0 at 0x08000010 with 496 bytes
+** Programming Finished **
+** Resetting Target **
+Info : Unable to match requested speed 2000 kHz, using 1800 kHz
+Info : Unable to match requested speed 2000 kHz, using 1800 kHz
+shutdown command invoked
+```
+
+The echo is still broken though:
+
+```
+kayce@kayce0:~/repos/cube$ bazel run //tools:miniterm -- /dev/ttyACM0 --filter=debug
+INFO: Build options --@hal_driver//:hal_config and --copt have changed, discarding analysis cache.
+INFO: Analyzed target //tools:miniterm (0 packages loaded, 8946 targets configured).
+INFO: Found 1 target...
+Target //tools:miniterm up-to-date:
+  bazel-bin/tools/miniterm
+INFO: Elapsed time: 0.241s, Critical Path: 0.06s
+INFO: 4 processes: 4 internal.
+INFO: Build completed successfully, 4 total actions
+INFO: Running command line: bazel-bin/tools/miniterm /dev/ttyACM0 '--filter=debug'
+--- Miniterm on /dev/ttyACM0  115200,8,N,1 ---
+--- Quit: Ctrl+] | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H ---
+ [TX:'a']  [TX:'g'] 
+```
+
+At this point it's time to give up on this journey and go home!
