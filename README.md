@@ -69,7 +69,7 @@ happens when I try to build.
 So where do I put the `pw_stm32cube_build` dep? `//src/BUILD.bazel` makes sense
 because it's the echo app that will be using the library. But
 `//targets/BUILD.bazel` also makes sense because I'll be using the STM32Cube
-lib with that library.
+lib with that target.
 
 **Takeaway**: The `pw_stm32cube_build` should clearly and explicitly show where
 to declare the dependency.
@@ -131,6 +131,10 @@ cc_binary(
     }),
 )
 ```
+
+**Takeaway**: We should probably invest a lot more in the developer experience
+for projects that build for multiple targets. I don't think vanilla Bazel does
+enough for us here. developer experience = better docs, more tooling, etc.
 
 OK, let's try to build that last change (`pw_stm32cube_build` nested as a dep
 under `@platforms//cpu:armv7e-m`):
@@ -458,9 +462,11 @@ new_local_repository(
 
 OK what happens when I try to build now?
 
-It seems like it's building correctly but it's taking a while. 
+It seems like it's building correctly but it's taking a while.
 
 OK it built! So how can I actually use this stuff now??
+
+**Takeaway**: Is there any way to speed up / simplify this external dep stuff??
 
 (In my first attempt I was lucky because I knew where to look for other
 examples e.g. `sample_project` and upstream Pigweed itself. A real prospective
