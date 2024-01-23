@@ -12,6 +12,11 @@ This repo will probably get archived or deleted in Q2 2024.
 Notes are ordered chronologically, with the oldest stuff at the top. I'll
 use H3 sections to make it easier to tell separate ideas apart.
 
+[example/echo]: https://pigweed.googlesource.com/example/echo
+
+[example/echo] was my starting point. Check out the pull request to see what
+I changed: https://github.com/kaycebasques/cube/pull/1/files
+
 ### This is actually my second attempt
 
 In my first attempt I was completely new to Bazel. I will note where I
@@ -35,7 +40,6 @@ who aren't familiar with a given manufacturer's hardware/software ecosystem.
 
 ### example/echo works
 
-[example/echo]: https://pigweed.googlesource.com/example/echo
 
 Just a quick note to verify that I made sure that [example/echo] works on my
 board before attempting these experiments.
