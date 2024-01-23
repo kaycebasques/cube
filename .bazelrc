@@ -25,3 +25,7 @@ common --noenable_bzlmod
 # TODO: https://pwbug.dev/319665090: Disable hermetic sandbox tmp due to issues
 # with arm toolchain.
 build --noincompatible_sandbox_hermetic_tmp
+
+build:stm32 --@hal_driver//:hal_config=@pigweed//targets/stm32f429i_disc1_stm32cube:hal_config
+build:stm32 --copt="-DSTM32CUBE_HEADER=\"stm32f4xx.h\""
+build:stm32 --copt="-DSTM32F429xx"

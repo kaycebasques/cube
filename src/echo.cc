@@ -15,9 +15,11 @@
 #include <cstddef>
 
 #include "pw_sys_io/sys_io.h"
-
+#include "stm32f4xx.h"
 
 int main() {
+  HAL_Init();
+  pw_sys_io_stm32f429_Init();
   while (true) {
     std::byte data;
     pw::sys_io::ReadByte(&data).IgnoreError();
