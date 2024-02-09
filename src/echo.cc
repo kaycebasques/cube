@@ -15,13 +15,17 @@
 #include <cstddef>
 
 #include "pw_sys_io/sys_io.h"
-
+#include "stm32f4xx.h"
+#include "pw_sys_io_baremetal_stm32f429/init.h"
 
 int main() {
+  HAL_Init();
+  pw_sys_io_stm32f429_Init();
   while (true) {
     std::byte data;
     pw::sys_io::ReadByte(&data).IgnoreError();
-    pw::sys_io::WriteByte(data).IgnoreError();
+    std::byte c = (std::byte) 'c';  // new
+    pw::sys_io::WriteByte(c).IgnoreError();  // new
   }
   return 0;
 }

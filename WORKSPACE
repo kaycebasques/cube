@@ -79,6 +79,24 @@ local_repository(
     path = "third_party/pigweed/pw_toolchain_bazel",
 )
 
+new_local_repository(
+    name = "hal_driver",
+    path = "third_party/hal_driver",
+    build_file = "@pigweed//third_party/stm32cube:stm32_hal_driver.BUILD.bazel",
+)
+
+new_local_repository(
+    name = "cmsis_device",
+    path = "third_party/cmsis_device",
+    build_file = "@pigweed//third_party/stm32cube:cmsis_device.BUILD.bazel",
+)
+
+new_local_repository(
+    name = "cmsis_core",
+    path = "third_party/cmsis_core",
+    build_file = "@pigweed//third_party/stm32cube:cmsis_core.BUILD.bazel",
+)
+
 # Get ready to grab CIPD dependencies. For this minimal example, the only
 # dependencies will be the toolchains and OpenOCD (used for flashing).
 load(
